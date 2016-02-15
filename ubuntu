@@ -1,0 +1,117 @@
+
+## Install Ubuntu 32x on Virtual Box > Windows users
+
+**Step 1: Download Virtual Box**
+(https://www.virtualbox.org/ "Virtual Box")
+
+**Step 2: Switch of Hyper-V
+(http://superuser.com/questions/684966/switch-off-hyper-v-without-disable-functionality-in-windows-8-1 "Hyper V")
+
+```CMD: bcdedit /set hypervisorlaunchtype off```
+
+**Step 3: Download Ubuntu
+(http://www.ubuntu.com/download/desktop "Ubuntu")
+
+**Step 4: Install Ubuntu on the VM
+
+1. Create Virtual Machine: 
+..* Type: Linux
+..* Version: Ubuntu (32/64 bit)
+2. Settings:
+..* Memory size: 8 gig
+..* Create a virtual Hard Disk
+..* VDI
+..* Dynamically allocated
+3. Install Ubuntu:
+..* Settings VM: Storage
+..* Optical Drive: Ubuntu.exe > install ubuntu on VM
+
+## Setup Ruby on Rails - Install Ruby 2.2.3
+(https://gorails.com/setup/ubuntu/15.10 "Ruby Install Guide")
+
+**Step 1: Install Dependencies
+
+```
+sudo apt-get update
+sudo apt-get install git-core curl zlib1g-dev build-essential libssl-dev libreadline-dev libyaml-dev libsqlite3-dev sqlite3 libxml2-dev libxslt1-dev libcurl4-openssl-dev python-software-properties libffi-dev
+```
+
+**Step 2: Install RVM
+
+```
+sudo apt-get install libgdbm-dev libncurses5-dev automake libtool bison libffi-dev
+curl -L https://get.rvm.io | bash -s stable
+source ~/.rvm/scripts/rvm
+rvm install 2.2.3
+rvm use 2.2.3 --default
+ruby -v
+```
+
+**Step 3: Don't install the documentation for each package locally
+
+```echo "gem: --no-ri --no-rdoc" > ~/.gemrc```
+
+**Step 4: Install Bundler
+
+```gem install bundler```
+
+## Install Chrome on Ubuntu 32x 
+(http://tecadmin.net/install-google-chrome-in-ubuntu/)
+
+**Step 1: Add Google Chrome repository**
+
+```
+wget -q -0 – https://dl-ssl.google.com/linux/linux_signing_key.pub | sude apt-key add -
+sudo sh -c 'echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list'
+```
+
+**Step 2: Install or upgrade Google Chrome**
+
+```
+sudo apt-get update
+sudo apt-get install google-chrome-stable
+```
+
+## Install Chrome Driver
+(https://devblog.supportbee.com/setting-up-cucumber-to-run-with-Chrome-on-Linux/)
+
+**Step 1: Install Unzip
+
+```sudo apt-get install unzip```
+
+**Step 2: Download latest version Chrome Driver (32/64-bit)
+
+```
+wget -N http://chromedriver.storage.googleapis.com/2.10/chromedriver_linux32.zip -P ~/Downloads
+unzip ~/Downloads/chromedriver_linux32.zip -d ~/Downloads
+```
+
+**Step 3: Make files executable and move to /usr/local/share
+
+```
+chmod +x ~/Downloads/chromedriver 
+sudo mv -f ~/Downloads/chromedriver /usr/local/share/chromedriver
+```
+
+**Step 4: Create symlinks to the chromedriver, cucumber would look for drivers in /usr/bin/chromedriver
+
+```
+sudo ln -s /usr/local/share/chromedriver /usr/local/bin/chromedriver 
+sudo ln -s /usr/local/share/chromedriver /usr/bin/chromedriver
+```
+
+**Step 5: Add/Replace below in the features/support/env.rb
+
+|   Capybara.register_driver :chrome do |app|   |               |
+|                                               |   #optional   |
+|                                               |   client = Selenium::WebDriver::Remote::Http::Default.new   |
+|                                               |   #optional   |
+|                                               |   client.timeout = 120  |
+|                                               |   Capybara::Selenium::Driver.new(app, :browser => :chrome, :http_client => client)  |
+|                                               |   end   |
+|                                               |   Capybara.javascript_driver = :chrome   |
+
+## Install Sublime Text
+(https://www.sublimetext.com/3)
+
+
